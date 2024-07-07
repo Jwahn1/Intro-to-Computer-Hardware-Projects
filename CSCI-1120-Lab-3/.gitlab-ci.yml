@@ -1,0 +1,51 @@
+# Robert Smith -- Check Lab 3 Code Ouputs
+
+stages:
+    - setup
+    - build
+    - test
+
+check-file-structure:
+    stage: setup
+    tags:
+        - ugrad
+    script:
+        - test -d Lab3
+        - test -d Lab3/lib
+        - test -d Lab3/pascal
+        - test -f Lab3/lib/mmath.c
+        - test -f Lab3/lib/mstring.c
+        - test -f Lab3/lib/mmath.h
+        - test -f Lab3/lib/mstring.h
+        - test -f Lab3/pascal/pascal.c
+        - test -f Lab3/pascal/pascal.h
+        - CI/check-num-files.sh
+
+run-lib:
+    stage: test
+    tags:
+        - ugrad
+    script:
+        - cp CI/objects/lib/* Lab3/lib/
+        - cd Lab3/lib/
+        - gcc --std=c18 -lm mmath.c mathM.o -o mmath
+        - gcc --std=c18 -lm mstring.c stringM.o -o mstring
+        - test -f mmath
+        - test -f mstring
+        - ./mmath
+        - ./mstring
+    timeout: 15 seconds
+
+run-pascal:
+    stage: test
+    tags:
+        - ugrad
+    script:
+        - cp CI/objects/pascal/* Lab3/pascal/
+        - cp -R Lab3/lib Lab3/pascal/lib
+        - cd Lab3/pascal/
+        - gcc --std=c18 -lm -Ilib lib/mmath.c lib/mstring.c pascal.c pascalM.o -o pascal
+        - test -f pascal
+        - ./pascal > output
+        - if [ $( diff output expected | wc -c ) == 0 ]; then true; else false; fi
+    timeout: 15 seconds

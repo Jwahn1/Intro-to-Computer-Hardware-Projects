@@ -1,0 +1,37 @@
+    1  mkdir one this us
+    2  cd us
+    3  echo "these kids at the door" > 02card
+    4  mkdir them
+    6  cd them
+    7  echo "every puppy you see, but not the flowers" >03spoil
+    8  echo "him out of the boat and save yourself" > 13boot
+    9  echo "the garden, unless you're scared of flowers" >14water
+   10  echo "the creek without paddle will make me late for dinner" >20up
+   11  cd ../..
+   12  cd one 
+   13  echo "people beatbox their way into my heart" >07kindhearted
+   14  echo "picking flowers and sing me a song about not letting anything go, ever" > 17start
+   15  mkdir two
+   16  cd two
+   17  echo "tell me not to tell me what's for dinner" >01never
+   18  echo "is boring, unless it's about puppies because puppies are awesome" >19history
+   21  mkdir three
+   22  cd three
+   23  echo "the difference between these two pictures" >08spot
+   25  echo "is the first day of your new life as a living thing" >09today
+   26  echo "the lions before you put your head in their mouth" > 10tame
+   27  echo "ity killed the cat, and that's sad" > 18curious
+   28  cd ../../..
+   29  cd this
+   30  echo "take you out for a steak dinner" > 05gonna
+   31  echo "children really test the bounds of child abuse law" >15sulky
+   32  mkdir that
+   33  cd that
+   34  echo "all the way to town using only one leg and an expensive hat" > 06bike
+   35  echo "me a hug and buy me dinner because you're making me hungry" > 11give
+   36  echo "rings are expensive things and that's sad" > 12expensive
+   37  mkdir theother
+   38  cd theother
+   39  echo "decisions make conscious efforts" > 04conscious
+   40  echo "should cook dinner for the one you love, especially if it's a puppy" > 16you
+   41  cd ../../..

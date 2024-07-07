@@ -1,0 +1,141 @@
+
+# Verify and test the Unix history/script files for Lab 1.
+
+stages:
+    - validity
+    - setup
+    - build
+    - test
+    - bonus
+
+check-file-structure:
+    stage: validity
+    tags:
+        - ugrad
+    script:
+        - echo -e "Testing if required files are present..."
+        - test -f Lab1/Challenge1/commands.hst
+        - echo -e "Lab1/Challenge1/commands.hst is present."
+        - test -f Lab1/Challenge2/generate.sh
+        - echo -e "Lab1/Challenge2/generate.sh is present."
+        
+        - echo -e "Checking if only required files/directories are present..."
+        - ./CI/check-num-files.sh
+
+convert-history-script:
+    stage: setup
+    tags:
+        - ugrad
+    script:
+        - echo -e "Checking for directory 'Lab1/Challenge1'..."
+        - test -d Lab1/Challenge1
+        - echo -e "Directory 'Lab1/Challenge1' found.\nChecking for file 'commands.hst'..."
+        - test -f Lab1/Challenge1/commands.hst
+        - echo -e "File 'commands.hst' found.\nConverting history to executable bash file."
+        - awk '{sub("^ *[0-9]+ +", ""); print}' Lab1/Challenge1/commands.hst >> challenge1.sh
+        - chmod u+x challenge1.sh
+    artifacts:
+        paths:
+            - challenge1.sh
+          
+execute-history-script:
+    stage: build
+    tags:
+        - ugrad
+    script:
+        - mkdir Task1
+        - cd Task1
+        - echo -e "Executing user provided commands from history..."
+        - ../challenge1.sh
+        - echo -e "Execution successful."
+        - cd ../
+    timeout: 15 seconds
+    artifacts:
+        paths:
+            - Task1        
+        
+execute-generate-script:
+    stage: build
+    tags:
+        - ugrad
+    script:
+        - chmod u+x Lab1/Challenge2/generate.sh
+        - mkdir Task2
+        - cd Task2
+        - echo -e "Executing user provided script..."
+        - ../Lab1/Challenge2/generate.sh
+        - echo -e "Execution successful."
+        - cd ../
+    timeout: 15 seconds
+    artifacts:
+        paths:
+            - Task2
+
+test-c1-files:
+    stage: test
+    tags:
+        - ugrad
+    script:
+        - echo -e "Testing structure of Challenge 1 (Task1)..."
+        
+        - test -f Task1/one/07kindhearted
+        - test -f Task1/one/17start
+        - test -f Task1/one/two/01never
+        - test -f Task1/one/two/19history
+        - test -f Task1/one/two/three/08spot
+        - test -f Task1/one/two/three/09today
+        - test -f Task1/one/two/three/10tame
+        - test -f Task1/one/two/three/18curious
+        - test -f Task1/this/05gonna
+        - test -f Task1/this/15sulky
+        - test -f Task1/this/that/06bike
+        - test -f Task1/this/that/11give
+        - test -f Task1/this/that/12expensive
+        - test -f Task1/this/that/theother/04conscious
+        - test -f Task1/this/that/theother/16you
+        - test -f Task1/us/02card
+        - test -f Task1/us/them/03spoil
+        - test -f Task1/us/them/13boot
+        - test -f Task1/us/them/14water
+        - test -f Task1/us/them/20up
+        
+        - echo -e "Structure is good.\nTesting file contents of Challenge1 (Task1)..."
+        - ./CI/check-contents.sh Task1
+        
+test-c2-files:
+    stage: test
+    tags:
+        - ugrad
+    script:
+        - echo -e "Testing structure of Challenge 2 (Task2)..."
+        
+        - test -f Task2/one/07kindhearted
+        - test -f Task2/one/17start
+        - test -f Task2/one/two/01never
+        - test -f Task2/one/two/19history
+        - test -f Task2/one/two/three/08spot
+        - test -f Task2/one/two/three/09today
+        - test -f Task2/one/two/three/10tame
+        - test -f Task2/one/two/three/18curious
+        - test -f Task2/this/05gonna
+        - test -f Task2/this/15sulky
+        - test -f Task2/this/that/06bike
+        - test -f Task2/this/that/11give
+        - test -f Task2/this/that/12expensive
+        - test -f Task2/this/that/theother/04conscious
+        - test -f Task2/this/that/theother/16you
+        - test -f Task2/us/02card
+        - test -f Task2/us/them/03spoil
+        - test -f Task2/us/them/13boot
+        - test -f Task2/us/them/14water
+        - test -f Task2/us/them/20up
+        
+        - echo -e "Structure is good.\nTesting file contents of Challenge2 (Task2)..."
+        - ./CI/check-contents.sh Task2
+
+test-bonus:
+    stage: bonus
+    tags:
+        - ugrad
+    script:
+        - ./CI/check-bonus.sh
